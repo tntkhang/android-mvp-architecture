@@ -5,9 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.github.tntkhang.mvptemplate.BaseActivity;
+import com.github.tntkhang.mvptemplate.base.BaseActivity;
 import com.github.tntkhang.mvptemplate.R;
 import com.github.tntkhang.mvptemplate.models.DataResponse;
 import com.github.tntkhang.mvptemplate.networking.Service;
@@ -75,11 +74,8 @@ public class HomeActivity extends BaseActivity implements HomeView {
         listData.add(dataResponse);
         listData.add(dataResponse);
 
-        HomeAdapter adapter = new HomeAdapter(getApplicationContext(), listData,
-                new HomeAdapter.OnItemClickListener() {
-                    @Override
-                    public void onClick(DataResponse item) {
-                    }
+        HomeAdapter adapter = new HomeAdapter(getApplicationContext(), listData, item -> {
+                // Item click action
                 });
 
         list.setAdapter(adapter);

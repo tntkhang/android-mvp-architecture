@@ -3,6 +3,7 @@ package com.github.tntkhang.mvptemplate.networking;
 import android.app.Application;
 
 import com.github.tntkhang.mvptemplate.BuildConfig;
+import com.github.tntkhang.mvptemplate.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,13 +17,13 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
 
-    Application mApplication;
+    private Application mApplication;
 
     public NetworkModule(Application application) {
         mApplication = application;
@@ -37,7 +38,7 @@ public class NetworkModule {
     @Provides
     @Singleton
     Cache provideCache(Application application) {
-        File cacheFile = new File(application.getCacheDir(), "responses");
+        File cacheFile = new File(application.getCacheDir(), application.getString(R.string.app_name));
         Cache cache = null;
         try {
             cache = new Cache(cacheFile, 10 * 1024 * 1024);
@@ -51,11 +52,8 @@ public class NetworkModule {
     @Singleton
     OkHttpClient provideOkHttpClient(Cache cache) {
         return new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                .addInterceptor( chain -> {
                         Request original = chain.request();
-
                         // Customize the request
                         Request request = original.newBuilder()
                                 .header("Content-Type", "application/json")
@@ -65,21 +63,19 @@ public class NetworkModule {
                         response.cacheResponse();
                         // Customize or return the response
                         return response;
-                    }
                 })
                 .cache(cache)
-
                 .build();
     }
 
     @Provides
     @Singleton
-    Retrofit provideCall(OkHttpClient okHttpClient) {
+    Retrofit provideRetrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.BASEURL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 

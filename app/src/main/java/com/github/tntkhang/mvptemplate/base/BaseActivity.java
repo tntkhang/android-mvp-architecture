@@ -1,8 +1,8 @@
-package com.github.tntkhang.mvptemplate;
+package com.github.tntkhang.mvptemplate.base;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
+import com.github.tntkhang.mvptemplate.BaseApplication;
 import com.github.tntkhang.mvptemplate.di.AppComponent;
 
 public class BaseActivity extends AppCompatActivity {

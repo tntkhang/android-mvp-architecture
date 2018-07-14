@@ -3,12 +3,11 @@ package com.github.tntkhang.mvptemplate.networking;
 
 import com.github.tntkhang.mvptemplate.models.DataResponse;
 
+import io.reactivex.Flowable;
 import retrofit2.http.GET;
-import rx.Observable;
 
 public interface NetworkService {
 
     @GET("floof/")
-    Observable<DataResponse> getData();
-
+    Flowable<DataResponse> getData();
 }
