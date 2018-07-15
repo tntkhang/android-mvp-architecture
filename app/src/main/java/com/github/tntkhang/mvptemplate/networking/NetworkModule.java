@@ -7,6 +7,7 @@ import com.github.tntkhang.mvptemplate.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -65,6 +66,9 @@ public class NetworkModule {
                         return response;
                 })
                 .cache(cache)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build();
     }
 

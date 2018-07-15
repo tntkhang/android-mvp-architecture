@@ -1,6 +1,7 @@
 package com.github.tntkhang.mvptemplate.networking;
 
 import com.github.tntkhang.mvptemplate.models.DataResponse;
+import com.github.tntkhang.mvptemplate.utils.Connectivity;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;

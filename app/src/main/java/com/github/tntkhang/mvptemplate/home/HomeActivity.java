@@ -10,6 +10,7 @@ import com.github.tntkhang.mvptemplate.base.BaseActivity;
 import com.github.tntkhang.mvptemplate.R;
 import com.github.tntkhang.mvptemplate.models.DataResponse;
 import com.github.tntkhang.mvptemplate.networking.Service;
+import com.github.tntkhang.mvptemplate.utils.Connectivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,10 @@ public class HomeActivity extends BaseActivity implements HomeView {
         init();
 
         presenter = new HomePresenter(service, this);
-        presenter.getCityList();
+        if (Connectivity.isConnected(this)) {
+            presenter.getCityList();
+        }
+
     }
 
     public void renderView(){
