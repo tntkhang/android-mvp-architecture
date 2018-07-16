@@ -1,7 +1,7 @@
 package com.github.tntkhang.mvptemplate.networking;
 
 
-import com.github.tntkhang.mvptemplate.models.DataResponse;
+import com.github.tntkhang.mvptemplate.models.network.DataResponse;
 
 import io.reactivex.Flowable;
 import retrofit2.http.GET;

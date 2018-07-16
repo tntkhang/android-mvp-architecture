@@ -1,4 +1,4 @@
-package com.github.tntkhang.mvptemplate.base;
+package com.github.tntkhang.mvptemplate.ui;
 
 import android.support.v7.app.AppCompatActivity;
 

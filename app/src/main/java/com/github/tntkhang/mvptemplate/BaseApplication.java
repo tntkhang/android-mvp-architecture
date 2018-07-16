@@ -7,6 +7,8 @@ import com.github.tntkhang.mvptemplate.di.DaggerAppComponent;
 import com.github.tntkhang.mvptemplate.networking.NetworkModule;
 import com.squareup.leakcanary.LeakCanary;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import timber.log.Timber;
 
 public class BaseApplication extends Application {
@@ -26,6 +28,17 @@ public class BaseApplication extends Application {
             }
             LeakCanary.install(this);
         }
+
+        Realm.init(this);
+
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .name("mvptemplate.realm")
+                .schemaVersion(1)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+
+        Realm.setDefaultConfiguration(config);
+
     }
 
     private void initializeDependencies() {

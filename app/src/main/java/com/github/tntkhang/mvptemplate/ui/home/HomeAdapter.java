@@ -1,4 +1,4 @@
-package com.github.tntkhang.mvptemplate.home;
+package com.github.tntkhang.mvptemplate.ui.home;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.tntkhang.mvptemplate.R;
-import com.github.tntkhang.mvptemplate.models.DataResponse;
+import com.github.tntkhang.mvptemplate.models.network.DataResponse;
 
 import java.util.List;
 

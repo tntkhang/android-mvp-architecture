@@ -1,14 +1,15 @@
-package com.github.tntkhang.mvptemplate.home;
+package com.github.tntkhang.mvptemplate.ui.home;
 
-import com.github.tntkhang.mvptemplate.base.BasePresenter;
-import com.github.tntkhang.mvptemplate.models.DataResponse;
+import com.github.tntkhang.mvptemplate.ui.BasePresenter;
+import com.github.tntkhang.mvptemplate.models.network.DataResponse;
+import com.github.tntkhang.mvptemplate.models.entitiy.DataEntity;
 import com.github.tntkhang.mvptemplate.networking.NetworkError;
 import com.github.tntkhang.mvptemplate.networking.Service;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import io.realm.Realm;
 
 public class HomePresenter extends BasePresenter {
     private final Service service;
@@ -32,6 +33,8 @@ public class HomePresenter extends BasePresenter {
     private void handleOnSuccess(DataResponse dataResponse) {
         view.removeWait();
         view.getCityListSuccess(dataResponse);
+
+        saveToDatabase(dataResponse);
     }
 
     private void handleOnError(Throwable throwable) {
@@ -40,5 +43,12 @@ public class HomePresenter extends BasePresenter {
 
     private void handleOnComplete() {
         view.removeWait();
+    }
+
+    private void saveToDatabase(DataResponse dataResponse) {
+        Realm realm = Realm.getDefaultInstance();
+
+        DataEntity dataEntity = new DataEntity(dataResponse.getImage(), dataResponse.getLink());
+        realm.executeTransaction(rlm -> rlm.copyToRealmOrUpdate(dataEntity));
     }
 }

@@ -1,4 +1,4 @@
-package com.github.tntkhang.mvptemplate.base;
+package com.github.tntkhang.mvptemplate.ui;
 
 import io.reactivex.disposables.CompositeDisposable;
 

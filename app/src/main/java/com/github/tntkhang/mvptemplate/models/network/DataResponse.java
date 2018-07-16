@@ -1,4 +1,4 @@
-package com.github.tntkhang.mvptemplate.models;
+package com.github.tntkhang.mvptemplate.models.network;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

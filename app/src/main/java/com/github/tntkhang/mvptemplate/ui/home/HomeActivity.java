@@ -1,4 +1,4 @@
-package com.github.tntkhang.mvptemplate.home;
+package com.github.tntkhang.mvptemplate.ui.home;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.github.tntkhang.mvptemplate.base.BaseActivity;
+import com.github.tntkhang.mvptemplate.ui.BaseActivity;
 import com.github.tntkhang.mvptemplate.R;
-import com.github.tntkhang.mvptemplate.models.DataResponse;
+import com.github.tntkhang.mvptemplate.models.network.DataResponse;
 import com.github.tntkhang.mvptemplate.networking.Service;
 import com.github.tntkhang.mvptemplate.utils.Connectivity;
 
