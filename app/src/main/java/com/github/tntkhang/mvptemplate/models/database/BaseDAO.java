@@ -1,4 +1,4 @@
-package com.github.tntkhang.mvptemplate.models.entitiy;
+package com.github.tntkhang.mvptemplate.models.database;
 
 import android.support.annotation.NonNull;
 

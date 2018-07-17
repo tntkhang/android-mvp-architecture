@@ -1,9 +1,11 @@
-package com.github.tntkhang.mvptemplate.networking;
+package com.github.tntkhang.mvptemplate.di;
 
 import android.app.Application;
 
 import com.github.tntkhang.mvptemplate.BuildConfig;
 import com.github.tntkhang.mvptemplate.R;
+import com.github.tntkhang.mvptemplate.networking.NetworkService;
+import com.github.tntkhang.mvptemplate.networking.Service;
 
 import java.io.File;
 import java.io.IOException;

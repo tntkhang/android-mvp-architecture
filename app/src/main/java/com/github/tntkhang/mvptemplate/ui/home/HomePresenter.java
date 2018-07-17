@@ -1,23 +1,25 @@
 package com.github.tntkhang.mvptemplate.ui.home;
 
+import com.github.tntkhang.mvptemplate.models.database.dao.DataDAO;
 import com.github.tntkhang.mvptemplate.ui.BasePresenter;
 import com.github.tntkhang.mvptemplate.models.network.DataResponse;
-import com.github.tntkhang.mvptemplate.models.entitiy.DataEntity;
+import com.github.tntkhang.mvptemplate.models.database.entity.DataEntity;
 import com.github.tntkhang.mvptemplate.networking.NetworkError;
 import com.github.tntkhang.mvptemplate.networking.Service;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import io.realm.Realm;
 
 public class HomePresenter extends BasePresenter {
     private final Service service;
+    private final DataDAO dataDAO;
     private final HomeView view;
 
-    public HomePresenter(Service service, HomeView view) {
+    public HomePresenter(Service service, DataDAO dataDAO, HomeView view) {
         super();
         this.service = service;
+        this.dataDAO = dataDAO;
         this.view = view;
     }
 
@@ -46,9 +48,7 @@ public class HomePresenter extends BasePresenter {
     }
 
     private void saveToDatabase(DataResponse dataResponse) {
-        Realm realm = Realm.getDefaultInstance();
-
         DataEntity dataEntity = new DataEntity(dataResponse.getImage(), dataResponse.getLink());
-        realm.executeTransaction(rlm -> rlm.copyToRealmOrUpdate(dataEntity));
+        dataDAO.add(dataEntity);
     }
 }

@@ -1,4 +1,4 @@
-package com.github.tntkhang.mvptemplate.models.entitiy;
+package com.github.tntkhang.mvptemplate.models.database;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -13,18 +13,18 @@ import io.realm.RealmResults;
 import io.realm.Sort;
 import io.realm.exceptions.RealmException;
 
-public class BaseDAOImpl<T extends RealmModel> implements BaseDAO<T> {
+public class BaseDAOImplement<T extends RealmModel> implements BaseDAO<T> {
 
-    private static final String TAG = BaseDAOImpl.class.getSimpleName();
+    private static final String TAG = BaseDAOImplement.class.getSimpleName();
     protected Realm realm;
     protected Class<T> entityClass;
 
-    public BaseDAOImpl() {
+    public BaseDAOImplement() {
         this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         this.realm = Realm.getDefaultInstance();
     }
 
-    public BaseDAOImpl(Realm realm) {
+    public BaseDAOImplement(Realm realm) {
         this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         this.realm = realm;
     }

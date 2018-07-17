@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.github.tntkhang.mvptemplate.models.database.dao.DataDAO;
 import com.github.tntkhang.mvptemplate.ui.BaseActivity;
 import com.github.tntkhang.mvptemplate.R;
 import com.github.tntkhang.mvptemplate.models.network.DataResponse;
@@ -24,6 +25,9 @@ public class HomeActivity extends BaseActivity implements HomeView {
     @Inject
     public Service service;
 
+    @Inject
+    public DataDAO dataDAO;
+
     @BindView(R.id.progress)
     ProgressBar progressBar;
 
@@ -40,7 +44,7 @@ public class HomeActivity extends BaseActivity implements HomeView {
         renderView();
         init();
 
-        presenter = new HomePresenter(service, this);
+        presenter = new HomePresenter(service, dataDAO, this);
         if (Connectivity.isConnected(this)) {
             presenter.getCityList();
         }

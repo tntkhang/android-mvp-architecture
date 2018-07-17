@@ -4,7 +4,8 @@ import android.app.Application;
 
 import com.github.tntkhang.mvptemplate.di.AppComponent;
 import com.github.tntkhang.mvptemplate.di.DaggerAppComponent;
-import com.github.tntkhang.mvptemplate.networking.NetworkModule;
+import com.github.tntkhang.mvptemplate.di.DatabaseModule;
+import com.github.tntkhang.mvptemplate.di.NetworkModule;
 import com.squareup.leakcanary.LeakCanary;
 
 import io.realm.Realm;
@@ -17,8 +18,6 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        initializeDependencies();
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
@@ -39,11 +38,14 @@ public class BaseApplication extends Application {
 
         Realm.setDefaultConfiguration(config);
 
+        initializeDependencies();
     }
 
     private void initializeDependencies() {
         appComponent = DaggerAppComponent.builder()
-                .networkModule(new NetworkModule(this)).build();
+                .networkModule(new NetworkModule(this))
+                .databaseModule(new DatabaseModule())
+                .build();
     }
 
     public AppComponent getAppComponent() {

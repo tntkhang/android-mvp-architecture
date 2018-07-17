@@ -1,4 +1,4 @@
-package com.github.tntkhang.mvptemplate.models.entitiy;
+package com.github.tntkhang.mvptemplate.models.database.entity;
 
 import io.realm.RealmModel;
 import io.realm.annotations.PrimaryKey;
