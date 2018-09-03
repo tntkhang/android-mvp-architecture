@@ -1,16 +1,13 @@
 package com.github.tntkhang.mvptemplate.ui.home;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.github.tntkhang.mvptemplate.R;
-import com.github.tntkhang.mvptemplate.models.network.DataResponse;
+import com.github.tntkhang.mvptemplate.models.network.responses.PostResponse;
 
 import java.util.List;
 
@@ -19,13 +16,11 @@ import butterknife.ButterKnife;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private final OnItemClickListener listener;
-    private List<DataResponse> data;
-    private Context context;
+    private List<PostResponse> data;
 
-    public HomeAdapter(Context context, List<DataResponse> data, OnItemClickListener listener) {
+    public HomeAdapter(List<PostResponse> data, OnItemClickListener listener) {
         this.data = data;
         this.listener = listener;
-        this.context = context;
     }
 
 
@@ -40,14 +35,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, int position) {
         holder.click(data.get(position), listener);
-        holder.textView.setText(data.get(position).getLink());
 
-        String images = data.get(position).getImage();
+        holder.mItem = data.get(position);
 
-        Glide.with(context)
-                .load(images)
-                .into(holder.background);
-
+        holder.tvTitle.setText(holder.mItem.getId() + ". " + holder.mItem.getTitle());
+        holder.tvDescription.setText(holder.mItem.getBody());
     }
 
 
@@ -58,28 +50,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
 
     public interface OnItemClickListener {
-        void onClick(DataResponse Item);
+        void onClick(PostResponse Item);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.textView)
-        TextView textView;
-        @BindView(R.id.image)
-        ImageView background;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_title)
+        TextView tvTitle;
+        @BindView(R.id.tv_description)
+        TextView tvDescription;
 
-        public ViewHolder(View itemView) {
+        PostResponse mItem;
+
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
 
-        public void click(final DataResponse dataResponse, final OnItemClickListener listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(dataResponse);
-                }
-            });
+        void click(final PostResponse dataResponse, final OnItemClickListener listener) {
+            itemView.setOnClickListener(v -> listener.onClick(dataResponse));
         }
     }
 

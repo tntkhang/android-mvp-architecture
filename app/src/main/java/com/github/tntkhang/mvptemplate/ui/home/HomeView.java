@@ -1,7 +1,9 @@
 package com.github.tntkhang.mvptemplate.ui.home;
 
 
-import com.github.tntkhang.mvptemplate.models.network.DataResponse;
+import com.github.tntkhang.mvptemplate.models.network.responses.PostResponse;
+
+import java.util.List;
 
 public interface HomeView {
     void showWait();
@@ -10,6 +12,6 @@ public interface HomeView {
 
     void onFailure(String appErrorMessage);
 
-    void getCityListSuccess(DataResponse dataResponse);
+    void getCityListSuccess(List<PostResponse> postResponses);
 
 }

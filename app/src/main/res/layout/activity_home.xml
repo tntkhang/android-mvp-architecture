@@ -6,7 +6,7 @@
     tools:context=".home.HomeActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+        android:id="@+id/rv_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="#00000000"/>

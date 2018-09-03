@@ -2,9 +2,11 @@ package com.github.tntkhang.mvptemplate.networking;
 
 import android.text.TextUtils;
 
+import com.github.tntkhang.mvptemplate.models.network.responses.ErrorResponse;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.List;
 import java.util.Map;
 
@@ -12,13 +14,14 @@ import retrofit2.HttpException;
 
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 
-public class NetworkError extends Throwable {
-    public static final String DEFAULT_ERROR_MESSAGE = "Something went wrong! Please try again.";
-    public static final String NETWORK_ERROR_MESSAGE = "No Internet Connection!";
+public class GeneralError extends Throwable {
+    public static final String DEFAULT_ERROR_MESSAGE = "Lỗi hệ thống. Vui lòng thử lại sau !";
+    public static final String NETWORK_ERROR_MESSAGE = "Không có kết nối mạng";
     private static final String ERROR_MESSAGE_HEADER = "Error-Message";
+    private static final String WRONG_USERNAME_PASSWORD = "Sai tên đăng nhập hoặc mật khẩu.";
     private final Throwable error;
 
-    public NetworkError(Throwable e) {
+    public GeneralError(Throwable e) {
         super(e);
         this.error = e;
     }
@@ -27,20 +30,21 @@ public class NetworkError extends Throwable {
         return error.getMessage();
     }
 
-    public boolean isAuthFailure() {
-        return error instanceof HttpException &&
-                ((HttpException) error).code() == HTTP_UNAUTHORIZED;
+    public static boolean isAuthFailure(Throwable throwable) {
+        return throwable instanceof HttpException &&
+                ((HttpException) throwable).code() == HTTP_UNAUTHORIZED;
     }
 
     public boolean isResponseNull() {
         return error instanceof HttpException && ((HttpException) error).response() == null;
     }
 
-    public String getAppErrorMessage() {
-        if (this.error instanceof IOException) return NETWORK_ERROR_MESSAGE;
-        if (!(this.error instanceof HttpException)) return DEFAULT_ERROR_MESSAGE;
-        retrofit2.Response<?> response = ((HttpException) this.error).response();
-        if (response != null) {
+    public static String getAppErrorMessage(Throwable throwable) {
+        if (throwable instanceof ConnectException || throwable instanceof  IOException) return NETWORK_ERROR_MESSAGE;
+        if (!(throwable instanceof HttpException)) return DEFAULT_ERROR_MESSAGE;
+        retrofit2.Response<?> response = ((HttpException) throwable).response();
+        if (response != null && response.code() != 500) {
+            if (isAuthFailure(throwable)) return WRONG_USERNAME_PASSWORD;
             String status = getJsonStringFromResponse(response);
             if (!TextUtils.isEmpty(status)) return status;
 
@@ -52,11 +56,11 @@ public class NetworkError extends Throwable {
         return DEFAULT_ERROR_MESSAGE;
     }
 
-    protected String getJsonStringFromResponse(final retrofit2.Response<?> response) {
+    protected static String getJsonStringFromResponse(final retrofit2.Response<?> response) {
         try {
             String jsonString = response.errorBody().string();
-            Response errorResponse = new Gson().fromJson(jsonString, Response.class);
-            return errorResponse.status;
+            ErrorResponse errorErrorResponse = new Gson().fromJson(jsonString, ErrorResponse.class);
+            return errorErrorResponse.status;
         } catch (Exception e) {
             return null;
         }
@@ -71,7 +75,7 @@ public class NetworkError extends Throwable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        NetworkError that = (NetworkError) o;
+        GeneralError that = (GeneralError) o;
 
         return error != null ? error.equals(that.error) : that.error == null;
 

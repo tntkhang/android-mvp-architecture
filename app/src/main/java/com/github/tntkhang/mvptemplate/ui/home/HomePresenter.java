@@ -1,11 +1,18 @@
 package com.github.tntkhang.mvptemplate.ui.home;
 
-import com.github.tntkhang.mvptemplate.models.database.dao.DataDAO;
-import com.github.tntkhang.mvptemplate.ui.BasePresenter;
-import com.github.tntkhang.mvptemplate.models.network.DataResponse;
-import com.github.tntkhang.mvptemplate.models.database.entity.DataEntity;
-import com.github.tntkhang.mvptemplate.networking.NetworkError;
+import android.content.Context;
+
+import com.github.tntkhang.mvptemplate.models.database.dao.PostDAO;
+import com.github.tntkhang.mvptemplate.models.database.entity.PostEntity;
+import com.github.tntkhang.mvptemplate.models.network.responses.PostResponse;
+import com.github.tntkhang.mvptemplate.networking.GeneralError;
 import com.github.tntkhang.mvptemplate.networking.Service;
+import com.github.tntkhang.mvptemplate.ui.BasePresenter;
+import com.github.tntkhang.mvptemplate.utils.Toaster;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -13,42 +20,49 @@ import io.reactivex.schedulers.Schedulers;
 
 public class HomePresenter extends BasePresenter {
     private final Service service;
-    private final DataDAO dataDAO;
+    private final PostDAO postDAO;
     private final HomeView view;
+    private final Context context;
 
-    public HomePresenter(Service service, DataDAO dataDAO, HomeView view) {
+    @Inject
+    public HomePresenter(Context context, Service service, PostDAO postDAO, HomeView view) {
         super();
+        this.context = context;
         this.service = service;
-        this.dataDAO = dataDAO;
+        this.postDAO = postDAO;
         this.view = view;
     }
 
     public void getCityList() {
         view.showWait();
-        Disposable disposable = service.getCityList()
+        Disposable disposable = service.getPosts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleOnSuccess, this::handleOnError, this::handleOnComplete);
         disposeBag.add(disposable);
     }
 
-    private void handleOnSuccess(DataResponse dataResponse) {
+    private void handleOnSuccess(List<PostResponse> postResponses) {
         view.removeWait();
-        view.getCityListSuccess(dataResponse);
+        view.getCityListSuccess(postResponses);
 
-        saveToDatabase(dataResponse);
+        if (postResponses.size() == 0) return;
+        saveToDatabase(postResponses.get(0));
     }
 
     private void handleOnError(Throwable throwable) {
-        view.onFailure(((NetworkError) throwable).getAppErrorMessage());
+        String errorMessage = GeneralError.getAppErrorMessage(throwable);
+        Toaster.error(context, errorMessage);
+        view.removeWait();
     }
 
     private void handleOnComplete() {
         view.removeWait();
     }
 
-    private void saveToDatabase(DataResponse dataResponse) {
-        DataEntity dataEntity = new DataEntity(dataResponse.getImage(), dataResponse.getLink());
-        dataDAO.add(dataEntity);
+    private void saveToDatabase(PostResponse postResponse) {
+        PostEntity postEntity = new PostEntity(postResponse);
+        postDAO.add(postEntity);
+        Toaster.success(context, "Save post to db success");
     }
 }
