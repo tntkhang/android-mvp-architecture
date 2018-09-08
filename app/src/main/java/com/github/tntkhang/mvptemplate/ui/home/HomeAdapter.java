@@ -37,7 +37,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.click(data.get(position), listener);
 
         holder.mItem = data.get(position);
-
         holder.tvTitle.setText(holder.mItem.getId() + ". " + holder.mItem.getTitle());
         holder.tvDescription.setText(holder.mItem.getBody());
     }

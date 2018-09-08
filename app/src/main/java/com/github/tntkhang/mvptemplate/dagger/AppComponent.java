@@ -2,7 +2,7 @@ package com.github.tntkhang.mvptemplate.dagger;
 
 import android.content.Context;
 
-import com.github.tntkhang.mvptemplate.models.database.dao.PostDAO;
+import com.github.tntkhang.mvptemplate.models.database.database.repository.PostRepository;
 import com.github.tntkhang.mvptemplate.networking.Service;
 
 import javax.inject.Singleton;
@@ -14,5 +14,5 @@ import dagger.Component;
 public interface AppComponent {
     Context provideContext();
     Service provideService();
-    PostDAO providePostDAO();
+    PostRepository providePostRepository();
 }

@@ -11,8 +11,6 @@ import com.github.tntkhang.mvptemplate.dagger.DatabaseModule;
 import com.github.tntkhang.mvptemplate.dagger.NetworkModule;
 import com.squareup.leakcanary.LeakCanary;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import khangtran.preferenceshelper.PreferencesHelper;
 
 public class BaseApplication extends MultiDexApplication {
@@ -33,16 +31,6 @@ public class BaseApplication extends MultiDexApplication {
             return;
         }
         LeakCanary.install(this);
-
-        Realm.init(this);
-
-        RealmConfiguration config = new RealmConfiguration.Builder()
-                .name("mvptemplate.realm")
-                .schemaVersion(1)
-                .deleteRealmIfMigrationNeeded()
-                .build();
-
-        Realm.setDefaultConfiguration(config);
 
         initializeDependencies();
 
