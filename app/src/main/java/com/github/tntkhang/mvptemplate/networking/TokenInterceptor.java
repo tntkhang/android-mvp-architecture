@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import khangtran.preferenceshelper.PreferencesHelper;
+import khangtran.preferenceshelper.PrefHelper;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -24,7 +24,7 @@ public class TokenInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
         Request.Builder builder1 = original.newBuilder();
-        String idToken = PreferencesHelper.getInstance().getStringValue(Constants.Prefs.TOKEN, "");
+        String idToken = PrefHelper.getStringVal(Constants.Prefs.TOKEN, "");
         if (!idToken.equalsIgnoreCase("")) {
             builder1.addHeader("Authorization", "Bearer " + idToken);
         }

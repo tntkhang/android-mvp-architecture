@@ -13,7 +13,7 @@ import com.squareup.leakcanary.LeakCanary;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import khangtran.preferenceshelper.PreferencesHelper;
+import khangtran.preferenceshelper.PrefHelper;
 
 public class BaseApplication extends MultiDexApplication {
     private static BaseApplication INSTANCE;
@@ -46,7 +46,7 @@ public class BaseApplication extends MultiDexApplication {
 
         initializeDependencies();
 
-        PreferencesHelper.initHelper(this);
+        PrefHelper.initHelper(this);
     }
 
     private void initializeDependencies() {

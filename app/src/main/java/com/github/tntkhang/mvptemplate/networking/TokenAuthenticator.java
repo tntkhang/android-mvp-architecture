@@ -11,7 +11,7 @@ import java.util.HashMap;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import khangtran.preferenceshelper.PreferencesHelper;
+import khangtran.preferenceshelper.PrefHelper;
 import okhttp3.Authenticator;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -43,7 +43,7 @@ public class TokenAuthenticator implements Authenticator {
             retrofit2.Response<AuthenResponse> tokenResponse = responseCall.execute();
             if(tokenResponse.code() == 200 && tokenResponse.body() != null) {
                 String newToken = tokenResponse.body().getToken();
-                PreferencesHelper.getInstance().setValue(Constants.Prefs.TOKEN, newToken);
+                PrefHelper.setVal(Constants.Prefs.TOKEN, newToken);
 
                 return response.request().newBuilder()
                         .header("Authorization", "Bearer " + newToken)
